@@ -2,14 +2,46 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-
 public class Convertor {
+    String[] select = new String[]{"Select", "Distance", "Energy", "Power", "Temperature", "Pressure"};
+    String[] select2 = new String[]{""};
+    String[] valuesDist = new String[]{"mm", "cm", "dm", "m", "km", "ft", "yd", "ml"};
+    String[] valuesPower = new String[]{"W", "kW", "HP"};
+    String[] valuesEnergy = new String[]{"J", "kJ", "MJ", "Wh", "kWh", "MWh"};
+    String[] valuesTemp = new String[]{"°C", "°F", "°K"};
+    String[] valuesPress = new String[]{"bar", "Pa", "kPa", "MPa", "psi"};
+    List<? extends Number> distListMM = Arrays.asList(1, 0.1, 0.01, 0.001, 0.000001, 0.003280839895, 0.0010936, 0.00000062); //done
+    List<? extends Number> distListCM = Arrays.asList(10, 1, 0.1, 0.01, 0.00001, 0.03280839895, 0.010936, 0.00000621); //done
+    List<? extends Number> distListDM = Arrays.asList(100, 10, 1, 0.1, 0.0001, 0.3280839895, 0.1093613298, 0.0000621371); //done
+    List<? extends Number> distListM = Arrays.asList(1000, 100, 10, 1, 0.001, 3.28084, 1.0936133, 0.000621371192); //done
+    List<? extends Number> distListKM = Arrays.asList(1000000, 100000, 10000, 1000, 1, 3280.8399, 1093.6132983377, 0.621371192); //done
+    List<? extends Number> distListFT = Arrays.asList(304, 8, 30.48, 3.048, 0.3048, 0.0003048, 1, 0.333333333, 0.000189394); //done
+    List<? extends Number> distListYD = Arrays.asList(914.4, 91.44, 9.144, 0.9144, 0.0009144, 3, 1, 0.000568182); //done
+    List<? extends Number> distListML = Arrays.asList(1609340, 160934, 16093.4, 1609.34, 1.60934, 5279.99, 1760, 1); //done
+    List<? extends Number> powerListW = Arrays.asList(1, 0.001, 0.001); //done
+    List<? extends Number> powerListkW = Arrays.asList(1000, 1, 1.34); //done
+    List<? extends Number> powerListHP = Arrays.asList(746, 0.746, 1); //done
+    List<? extends Number> energyListJ = Arrays.asList(1, 0.001, 0.000001, 0.0002777778, 0.0000002778, 0.0000000002778); //done
+    List<? extends Number> energyListkJ = Arrays.asList(1000, 1, 0.001, 0.2777777778, 0.0002777778, 0.00000027778); //done
+    List<? extends Number> energyListMJ = Arrays.asList(1000000, 1000, 1, 277.778, 0.278, 0.000278); //done
+    List<? extends Number> energyListWh = Arrays.asList(3600, 3.6, 0.0036, 1, 0.001, 0.000001); //done
+    List<? extends Number> energyListkWh = Arrays.asList(3600000, 3600, 3.6, 1000, 1, 0.001); //done
+    List<? extends Number> energyListMWh = Arrays.asList(0x36ee80, 3600000, 3600, 1000000, 1000, 1); //done -> j to MWh hexadecimal
+    List<? extends Number> tempListC = Arrays.asList(1, 33.7999992, 274.1499939); //done
+    List<? extends Number> tempListF = Arrays.asList(-17.2222195, 1, 255.9277802); //done
+    List<? extends Number> tempListK = Arrays.asList(-272.1499939, -457.8699951, 1); //done
+    List<? extends Number> pressListBar = Arrays.asList(1, 100000, 100, 0.1, 14.5037681); //done
+    List<? extends Number> pressListPa = Arrays.asList(0.00001, 1, 0.001, 0.000001, 0.0001450377); //done
+    List<? extends Number> pressListkPa = Arrays.asList(0.01, 1000, 0.001, 1, 0.1450377377); //done
+    List<? extends Number> pressListMPa = Arrays.asList(10, 1000000, 1000, 1, 145.03773773); //done
+    List<? extends Number> pressListPsi = Arrays.asList(0.0689475729, 6894.7572932, 6.8947572932, 0.0068947573, 1); //done
     private JTextField txt1;
     private JPanel ConvertorPan;
     private JPanel valueOut;
@@ -25,46 +57,6 @@ public class Convertor {
     private JLabel out7;
     private JLabel out8;
     private double inin;
-
-
-    String[] select = new String[]{"Select", "Distance", "Energy", "Power", "Temperature", "Pressure"};
-    String[] select2 = new String[]{""};
-    String[] valuesDist = new String[]{"mm", "cm", "dm", "m", "km", "ft", "yd", "ml"};
-    String[] valuesPower = new String[]{"W", "kW", "HP"};
-    String[] valuesEnergy = new String[]{"J", "kJ", "MJ", "Wh", "kWh", "MWh"};
-    String[] valuesTemp = new String[]{"°C", "°F", "°K"};
-    String[] valuesPress = new String[]{"bar", "Pa", "kPa", "MPa", "psi"};
-
-
-    List<? extends Number> distListMM = Arrays.asList(1, 0.1, 0.01, 0.001, 0.000001, 0.003280839895, 0.0010936, 0.00000062); //done
-    List<? extends Number> distListCM = Arrays.asList(10, 1, 0.1, 0.01, 0.00001, 0.03280839895, 0.010936, 0.00000621); //done
-    List<? extends Number> distListDM = Arrays.asList(100, 10, 1, 0.1, 0.0001, 0.3280839895, 0.1093613298, 0.0000621371); //done
-    List<? extends Number> distListM = Arrays.asList(1000, 100, 10, 1, 0.001, 3.28084, 1.0936133, 0.000621371192); //done
-    List<? extends Number> distListKM = Arrays.asList(1000000, 100000, 10000, 1000, 1, 3280.8399, 1093.6132983377, 0.621371192); //done
-    List<? extends Number> distListFT = Arrays.asList(304, 8, 30.48, 3.048, 0.3048, 0.0003048, 1, 0.333333333, 0.000189394); //done
-    List<? extends Number> distListYD = Arrays.asList(914.4, 91.44, 9.144, 0.9144, 0.0009144, 3, 1, 0.000568182); //done
-    List<? extends Number> distListML = Arrays.asList(1609340, 160934, 16093.4, 1609.34, 1.60934, 5279.99, 1760, 1); //done
-
-    List<? extends Number> powerListW = Arrays.asList(1, 0.001, 0.001); //done
-    List<? extends Number> powerListkW = Arrays.asList(1000, 1, 1.34); //done
-    List<? extends Number> powerListHP = Arrays.asList(746, 0.746, 1); //done
-
-    List<? extends Number> energyListJ = Arrays.asList(1, 0.001, 0.000001, 0.0002777778, 0.0000002778, 0.0000000002778); //done
-    List<? extends Number> energyListkJ = Arrays.asList(1000, 1, 0.001, 0.2777777778, 0.0002777778, 0.00000027778); //done
-    List<? extends Number> energyListMJ = Arrays.asList(1000000, 1000, 1, 277.778, 0.278, 0.000278); //done
-    List<? extends Number> energyListWh = Arrays.asList(3600, 3.6, 0.0036, 1, 0.001, 0.000001); //done
-    List<? extends Number> energyListkWh = Arrays.asList(3600000, 3600, 3.6, 1000, 1, 0.001); //done
-    List<? extends Number> energyListMWh = Arrays.asList(0x36ee80, 3600000, 3600, 1000000, 1000, 1); //done -> j to MWh hexadecimal
-
-    List<? extends Number> tempListC = Arrays.asList(1, 33.7999992, 274.1499939); //done
-    List<? extends Number> tempListF = Arrays.asList(-17.2222195, 1, 255.9277802); //done
-    List<? extends Number> tempListK = Arrays.asList(-272.1499939, -457.8699951, 1); //done
-
-    List<? extends Number> pressListBar = Arrays.asList(1, 100000, 100, 0.1, 14.5037681); //done
-    List<? extends Number> pressListPa = Arrays.asList(0.00001, 1, 0.001, 0.000001, 0.0001450377); //done
-    List<? extends Number> pressListkPa = Arrays.asList(0.01, 1000, 0.001, 1, 0.1450377377); //done
-    List<? extends Number> pressListMPa = Arrays.asList(10, 1000000, 1000, 1, 145.03773773); //done
-    List<? extends Number> pressListPsi = Arrays.asList(0.0689475729, 6894.7572932, 6.8947572932, 0.0068947573, 1); //done
 
 
     public Convertor() {
@@ -923,7 +915,6 @@ public class Convertor {
             }
         });
     }
-
 
 
     public static void main(String[] args) {

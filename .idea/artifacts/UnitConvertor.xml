@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="UnitConvertor:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/UnitConvertor_jar</output-path>
+  <artifact type="jar" build-on-make="true" name="UnitConvertor">
+    <output-path>$PROJECT_DIR$/out/artifacts/UnitConvertor</output-path>
     <root id="archive" name="UnitConvertor.jar">
       <element id="module-output" name="UnitConvertor" />
     </root>
